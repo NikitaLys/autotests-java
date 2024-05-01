@@ -32,12 +32,14 @@ public class DiaryTest {
 
     By newNoteBtnLocator = By.cssSelector("button.pageCreate__sidebarHeaderAdd");
     By popupLocator = By.cssSelector("div .popup");
-    By headingInputLocator = By.className("baseInput__field");
-    By textLocator = By.className("baseTextarea__text");
+    By headingInputLocator = By.cssSelector(".popup__baseInput input[placeholder='Введите заголовок']");
+    By textLocator = By.cssSelector(".popup__textarea textarea.baseTextarea__text");
     By addNoteBtnLocator = By.cssSelector("button.baseButton.popup__baseButton");
+    By addedHeadingLocator = By.cssSelector(".articlePreview:nth-of-type(1) .articlePreview__title");
+    By addedTextLocator = By.cssSelector(".articlePreview:nth-of-type(1) .articlePreview__text");
 
     @Test
-    @DisplayName("")
+    @DisplayName("Test adding note in popup")
     public void testAddNote() {
         String heading = "My first note";
         String text = "Write autotest for diary";
@@ -46,7 +48,9 @@ public class DiaryTest {
         driver.findElement(headingInputLocator).sendKeys(heading);
         driver.findElement(textLocator).sendKeys(text);
         driver.findElement(addNoteBtnLocator).click();
-        Assert.assertTrue("Popup is NOT displayed", wait.until(ExpectedConditions.invisibilityOfElementLocated(popupLocator)));
+        Assert.assertTrue("Popup is displayed", wait.until(ExpectedConditions.invisibilityOfElementLocated(popupLocator)));
+        Assert.assertEquals("Wrong added heading", heading, driver.findElement(addedHeadingLocator).getText());
+        Assert.assertEquals("Wrong added text", text, driver.findElement(addedTextLocator).getText());
     }
 
 }
